@@ -1,0 +1,178 @@
+/* =====================================================
+   ESTILOS DE LA INVITACIÓN – Experiencia CONY 👑
+   Secciones: 1 Colores · 2 Base · 3 Ventanas · 4 Perfiles
+   5 Botones · 6 Tarjetas · 7 Trivia · 8 Confirmación
+   9 Carta · 10 Ranking/Panel · 11 Reproductor
+   ===================================================== */
+
+/* ---------- 1. COLORES (cambialos acá y cambia todo) ---------- */
+:root{
+  --bg1:#ffd1ec;     /* fondo: rosa claro */
+  --bg2:#ff9ad5;     /* fondo: rosa más fuerte */
+  --card:#ffffff;    /* fondo de las ventanas */
+  --ink:#7a0f55;     /* color de los textos */
+  --pink:#ff4fb8;    /* rosa chicle */
+  --hot:#e0198f;     /* fucsia */
+  --soft:#ffe3f4;    /* rosa pastel (tarjetas) */
+  --line:#ff79c6;    /* bordes */
+  --shadow:#c2177f;  /* sombra "dura" estilo retro */
+  /* Deja espacio para la barra del celular (notch) */
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+/* Modo oscuro: si el celular está en oscuro, se usan estos colores */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg1:#4a1138; --bg2:#2a0a22; --card:#3a1030;
+    --ink:#ffd9f0; --soft:#551746; --line:#ff79c6; --shadow:#ff4fb8;
+  }
+}
+
+/* ---------- 2. BASE ---------- */
+*{box-sizing:border-box}                 /* los tamaños incluyen el borde */
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:'Fredoka','Trebuchet MS',sans-serif;
+  color:var(--ink);
+  background:var(--bg2);
+  /* Puntitos brillantes + degradé de fondo */
+  background-image:
+    radial-gradient(circle at 20% 10%,#fff8 0 3px,transparent 4px),
+    radial-gradient(circle at 80% 30%,#fff8 0 2px,transparent 3px),
+    linear-gradient(160deg,var(--bg1),var(--bg2));
+  background-size:60px 60px,90px 90px,cover;
+}
+.wrap{max-width:560px;margin:0 auto;padding:14px 14px 90px} /* 90px abajo = lugar para el reproductor */
+h1,h2{font-family:'Pacifico','Brush Script MT',cursive;font-weight:400;margin:.2em 0;line-height:1.25;text-align:center}
+h1{font-size:1.7rem}
+h2{font-size:1.45rem}
+.sub{text-align:center;font-weight:600;margin:6px 0 14px}
+.big{font-size:3rem;text-align:center}   /* emojis grandes */
+.note{font-size:.85rem;text-align:center;opacity:.85}
+
+/* Pantallas: solo se ve la que tiene la clase "on" */
+.screen{display:none}
+.screen.on{display:block}
+
+/* ---------- Animaciones ---------- */
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}  /* aparecer */
+@keyframes tw{50%{opacity:.4;transform:scale(1.3)}}                               /* titilar */
+@keyframes eq{to{height:18px}}                                                    /* barritas música */
+/* Si la persona tiene "reducir movimiento" activado, se apagan las animaciones */
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+/* ---------- MENÚ DE SECCIONES (barra de arriba) ---------- */
+#nav{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding:2px 2px 6px} /* si no entra, se desliza de costado */
+#nav[hidden]{display:none}                    /* necesario para que "hidden" funcione con display:flex */
+#nav button{
+  flex:1 0 auto; font:inherit; font-weight:700; font-size:.8rem; padding:7px 10px;
+  border-radius:999px; border:3px solid var(--line); background:var(--soft); color:var(--ink);
+  box-shadow:0 3px 0 var(--shadow); white-space:nowrap;
+}
+#nav button.on{background:var(--hot);color:#fff}           /* sección donde estás ahora */
+#nav button:disabled{opacity:.5;box-shadow:none}           /* secciones todavía bloqueadas */
+#nav button:disabled::after{content:" 🔒"}
+
+/* ---------- 3. VENTANAS ESTILO MINIJUEGO ---------- */
+.win{
+  background:var(--card);
+  border:4px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 6px 0 var(--shadow);
+  overflow:hidden;
+  margin-bottom:16px;
+  animation:pop .35s ease;
+}
+.bar{   /* barra de título de la ventana */
+  background:linear-gradient(90deg,#ff79c6,#ff4fb8,#ffb3e1);
+  color:#fff; font-weight:700; padding:8px 14px;
+  display:flex; justify-content:space-between; font-size:.95rem;
+  text-shadow:0 1px 0 #b0126f;
+}
+.body{padding:16px}
+
+/* ---------- 4. PERFILES (grilla de personajes) ---------- */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px} /* 3 columnas: cambiá el 3 si querés más/menos */
+.profile{
+  background:var(--soft); border:3px solid var(--line); border-radius:16px;
+  padding:10px 4px; text-align:center; font:inherit; font-weight:700; color:var(--ink);
+  box-shadow:0 4px 0 var(--shadow); transition:transform .12s;
+}
+.profile:hover,.profile:focus-visible{transform:translateY(-3px) rotate(-2deg);background:#fff0fa;outline:3px dashed var(--pink)}
+.profile .av{font-size:1.9rem;display:block} /* emoji del perfil */
+
+/* ---------- 5. BOTONES ---------- */
+.btn{
+  display:block; width:100%; margin-top:14px; padding:13px;
+  font:inherit; font-weight:700; font-size:1.1rem; color:#fff;
+  background:linear-gradient(#ff7cc9,#e0198f);
+  border:3px solid #fff; border-radius:999px;
+  box-shadow:0 5px 0 var(--shadow),0 0 0 3px var(--line);
+  text-shadow:0 1px 0 #8a0c58;
+}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--shadow),0 0 0 3px var(--line)} /* efecto "apretado" */
+.btn.alt{background:var(--soft);color:var(--ink);text-shadow:none} /* botón claro */
+
+/* ---------- 6. TARJETAS, DESPLEGABLES Y AVISOS ---------- */
+.card{background:var(--soft);border:3px dashed var(--line);border-radius:16px;padding:12px;margin:10px 0}
+.card h3{margin:0 0 4px;font-size:1.1rem}
+.card p{margin:4px 0}
+.date{display:grid;gap:8px;font-size:1.25rem;font-weight:700;text-align:center}
+details{background:var(--soft);border:3px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0}
+summary{font-weight:700;font-size:1.05rem}
+.rule{background:#ff4fb8;color:#fff;border-radius:12px;padding:10px;font-weight:700;text-align:center;margin-top:8px}
+
+/* ---------- 7. TRIVIA ---------- */
+.q{font-weight:700;margin:6px 0 10px}                     /* texto de la pregunta */
+.opt{                                                     /* botones de respuesta */
+  display:block; width:100%; text-align:left; margin:8px 0; padding:11px 12px;
+  font:inherit; color:var(--ink); background:var(--soft);
+  border:3px solid var(--line); border-radius:14px; box-shadow:0 4px 0 var(--shadow);
+}
+.opt:hover{background:#fff0fa}
+.prog{height:14px;background:var(--soft);border:2px solid var(--line);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#ff79c6,#e0198f);width:0;transition:width .3s}
+
+/* ---------- 8. CONFIRMACIÓN ---------- */
+label{font-weight:700;display:block;margin-top:10px}
+textarea{width:100%;font:inherit;padding:10px;border:3px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+.choice{display:flex;gap:8px}                  /* ¡Voy! y No puedo lado a lado */
+.choice .opt{text-align:center;margin:8px 0 0}
+#ask{background:var(--soft);border:3px dashed var(--line);border-radius:16px;padding:14px;text-align:center;margin-top:12px}
+#ask .btn{display:inline-block;width:auto;padding:11px 18px;margin:8px 4px 0;transform-origin:center} /* el tamaño cambia desde rsvp.js */
+
+/* ---------- 9. SOBRE Y CARTA ---------- */
+.env{font-size:4rem;display:block;margin:10px auto;background:none;border:0;animation:tw 1.6s infinite}
+.letter{
+  background:#fffdf5; color:#6b2147; border:3px solid var(--line); border-radius:6px;
+  padding:18px; line-height:1.55; box-shadow:0 5px 0 var(--shadow);
+  animation:pop .5s ease; font-size:1.02rem;
+}
+.letter p{margin:0 0 .9em}
+.letter .sig{font-family:'Pacifico',cursive;font-size:1.4rem;text-align:right;color:#e0198f} /* firma */
+
+/* ---------- 10. RANKING Y PANEL ---------- */
+.rank{list-style:none;padding:0;margin:8px 0}
+.rank li{display:flex;justify-content:space-between;gap:8px;background:var(--soft);border:2px solid var(--line);border-radius:12px;padding:7px 12px;margin:5px 0;font-weight:600}
+.me{background:var(--hot)!important;color:#fff}                /* tu propia fila */
+.tag{font-weight:700;border-radius:99px;padding:1px 9px;color:#fff;height:fit-content}
+.y{background:#16a34a}  /* etiqueta verde "Va" */
+.n{background:#dc2626}  /* etiqueta roja "No va" */
+
+/* ---------- 11. REPRODUCTOR (barra fija abajo) ---------- */
+#player{
+  position:fixed; left:0; right:0; bottom:0; z-index:5;
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(90deg,#ff79c6,#ff4fb8);
+  border-top:4px solid #fff; display:flex; align-items:center; gap:10px; color:#fff;
+}
+#player button{width:42px;height:42px;border-radius:50%;border:3px solid #fff;background:var(--hot);color:#fff;font-size:1.1rem;flex:none}
+#np{flex:1;min-width:0;font-weight:700;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eq{display:flex;gap:2px;align-items:flex-end;height:18px}
+.eq i{width:4px;background:#fff;height:5px;border-radius:2px}
+.playing .eq i{animation:eq .7s infinite alternate}   /* las barritas se mueven solo si suena */
+.eq i:nth-child(2){animation-delay:.2s}
+.eq i:nth-child(3){animation-delay:.4s}
